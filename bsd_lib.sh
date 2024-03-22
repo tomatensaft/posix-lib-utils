@@ -3,53 +3,9 @@
 
 set -u
 
-#header functions
-#$1 header
-print_header()
-{
-
-	printf "\n################################################\n"
-	printf "$1"
-	printf "\n################################################\n\n"
-}
-
-#print header
-print_header 'load shared lib'
-
-#check if file exists
-
-#find & replace
-#$1 file
-#$2 parameter
-#$3 value
-add_or_replace_in() {
-	
-	if grep "^$2" "$1" > /dev/null; then
-		sed -i "" "s|^$2.*|$2$3|g" "$1"
-	else
-		echo "$2$3" >> "$1"
-	fi
-}
-
-#check git client - needed for different software
-#$1 exit (EXT) or return (RET)
-check_git() {
-
-	#Preconfigure ExitState
-	exit_state=${1:-RET}
-
-    if pkg info git | grep git; then
-        log -info "git Found"
-    else
-		log -info "install git"
-        pkg install -y git 
-    fi
-
-}
-
-#Check if Jail exists
-#$1 JailName
-#$2 Exit (EXT) or Return (RET)
+# check if Jail exists
+# $1 JailName
+# $2 Exit (EXT) or Return (RET)
 check_jail() {
 
 	#Preconfigure ExitState
@@ -65,128 +21,9 @@ check_jail() {
     fi
 }
 
-#Log Message
-#$1 Option
-log() {
-
-	#Check Inputargs
-		case $1 in
-				-info)
-					printf "\nINFO [$(date +'%Y-%m-%dT%H:%M:%S')]: $2 \n"
-					;;
-				-header)
-					printf "$2 \n"
-					;;
-
-				-error)
-					printf "\nERROR [$(date +'%Y-%m-%dT%H:%M:%S')]: $2 \n"
-					;;	
-
-				-file)
-					printf "\n[$(date +'%Y-%m-%dT%H:%M:%S')]: $2 \n"
-					;;	
-
-				*)
-					printf "$0 Usage: -"
-					printf "[info,header,error,file]\n\n"
-					exit 1
-					;;
-		esac
-}
-
-
-#Usage
-usage() {
-	printf "\n++++++++++++ Usage / Help ++++++++++++++++\n\n"
-	for help in "$@"
-		do
-			printf "$help\n"
-		done
-	printf "++++++++++++++++++++++++++++++++++++++++++\n"
-    cleanup_exit ERR
-}
-
-#Cleanup & Exit
-#$1 Option
-#$2 Exit (EXT) or Return (RET)
-cleanup_exit() {
-
-	#Preconfigure ExitState
-	exit_state=${2:-0}
-
-    case $1 in
-            OK)
-                log -info "cleanup & exit state -> EXIT - OK\n"
-                exit 0
-                ;;
-
-            ERR)
-                log -info "cleanup & exit state -> EXIT - ERROR\n"
-                exit 1
-                ;;
-			EXT)
-                log -info "cleanup & exit state -> EXIT ${exit_state}\n"
-                exit $exit_state
-                ;;		
-			RET)
-                log -info "cleanup & exit state -> RETURN ${exit_state}\n"
-                return $exit_state
-                ;;	
-            *)
-                log -info "cleanup & exit state -> EXIT - DEFAULT\n"
-                exit 1      
-                ;;
-    esac
-}
-
-#Check Root
-#$1 Exit (EXT) or Return (RET)
-check_root() {
-	
-	#Preconfigure ExitState
-	exit_state=${1:-ERR}
-
-    if [ $(id -u) -ne 0 ]; then
-        log -info "usage: run '$0' as root."
-        cleanup_exit $exit_state
-    fi
-}
-
-#Check Arguements ($# Arguments / Count of Args)
-#$1 Requestet Args
-#$2 Actual Args
-#$3 Exit (EXT) or Return (RET)
-check_args() {
-
-	#Preconfigure ExitState
-	exit_state=${3:-ERR}
-
-	if [ "$1" -lt "$2" ]; then
-		log -error "number of parameters wrong. see --help."
-        cleanup_exit $exit_state
-	fi
-}
-
-#Check Beckhoff device
-#$1 Exit (EXT) or Return (RET)
-check_bhf_device() {
-
-	#Preconfigure ExitState
-	exit_state=${1:-RET}
-
-	if uname -a | grep BHF; then
-		log -info "beckhoff device found."
-		cleanup_exit $exit_state 0
-	else	
-		log -info "no beckhoff device found."
-        cleanup_exit $exit_state 1
-	fi
-}
-
-
-#Check nic
-#$1 nic interface
-#$2 Exit (EXT) or Return (RET)
+# check nic
+# $1 nic interface
+# $2 Exit (EXT) or Return (RET)
 check_nic_device() {
 
 	#Preconfigure ExitState
@@ -203,8 +40,8 @@ check_nic_device() {
 }
 
 
-#Check VirtualBox device
-#$1 Exit (EXT) or Return (RET)
+# check VirtualBox device
+# $1 Exit (EXT) or Return (RET)
 check_vbox_device() {
 
 	#Preconfigure ExitState
@@ -220,8 +57,8 @@ check_vbox_device() {
 }
 
 
-#Set Vbox defaults
-#Extend to CX and IPC devices
+# set Vbox defaults
+# extend to CX and IPC devices
 load_device_defaults() {
 
 	if sysctl -a | grep VBOX; then
@@ -238,29 +75,9 @@ load_device_defaults() {
 }
 
 
-#Load Config File
-#$1 configuration file
-#$2 Exit (EXT) or Return (RET)
-load_config() {
-
-	#Preconfigure ExitState
-	exit_state=${2:-ERR}
-
-    #Load Parameter file
-    #Define Parameters in Configfile
-    if [ -f $1 ]; then
-        log -info "$0: $1 parameter file found."
-        . $1
-    else
-        log -info "$0: $1 no parameter file found."
-        cleanup_exit $exit_state
-    fi
-
-}
-
-#Check Software package
-#$1 command/program
-#$2 Exit (EXT) or Return (RET)
+# check software package
+# $1 command/program
+# $2 Exit (EXT) or Return (RET)
 check_software_pkg() {
 
 	#Preconfigure ExitState
@@ -284,9 +101,9 @@ check_software_pkg() {
 }
 
 
-#Switch Repot at TcBSD device
-#$1 freebsd/bhf (freebsd / bhf)
-#$2 Exit (EXT) or Return (RET)
+# switch Repot at TcBSD device
+# $1 freebsd/bhf (freebsd / bhf)
+# $2 Exit (EXT) or Return (RET)
 switch_tcbsd_repo() {
 
 	#Preconfigure ExitState
