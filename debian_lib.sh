@@ -10,4 +10,3 @@ else
     printf "$0: standardlib not found - exit."
     exit 1
 fi
-

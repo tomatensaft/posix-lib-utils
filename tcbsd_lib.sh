@@ -1,7 +1,15 @@
 #!/bin/sh
 # SPDX-License-Identifier: MIT
 
-set -u
+#set -x
+
+# include external libs from git module
+if [ -f  ./posix-lib-utils/standard_lib.sh ]; then
+    . ./posix-lib-utils/standard_lib.sh
+else
+    printf "$0: standardlib not found - exit."
+    exit 1
+fi
 
 # check if Jail exists
 # $1 JailName
@@ -131,5 +139,21 @@ switch_tcbsd_repo() {
 		log -info "repo option not found - use freebsd or bhf"
 		cleanup_exit $exit_state
 	fi
+
+}
+
+# check git client - needed for different software
+# $1 exit (EXT) or return (RET)
+check_git_bsd() {
+
+	#Preconfigure ExitState
+	exit_state=${1:-RET}
+
+    if pkg info git | grep git; then
+        log -info "git Found"
+    else
+		log -info "install git"
+        pkg install -y git 
+    fi
 
 }

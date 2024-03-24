@@ -1,7 +1,7 @@
 #!/bin/sh
 # SPDX-License-Identifier: MIT
 
-set -u
+# set -x
 
 # header functions
 # $1 header
@@ -185,7 +185,30 @@ load_config() {
 # $1 certifcation folder
 create_folder() {
 
-    log_message "$0: create folder $1"
+    log -info "$0: create folder $1"
     mkdir -p $1
 
+}
+
+
+
+#yes/no to continue
+continue_yes_no() {
+
+    while true; do
+        read -p "continue setup [y]es or [n]o ?" result
+        case ${result} in
+            [Yy]* ) make install; break;;
+            [Nn]* ) exit;;
+            * ) printf "only [y]es or [n]o.\n";;
+        esac
+    done
+
+}
+
+
+#test configuration
+test_configuration() {
+
+    log -info "test configuration"
 }
