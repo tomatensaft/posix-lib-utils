@@ -20,3 +20,18 @@ else
     exit 1
 fi
 
+#first way
+git submodule update --init
+git fetch
+git merge origin/master
+
+
+#second way
+#goto submodule folder
+git fetch
+git merge origin/main
+
+#fetch with git upte
+git submodule update --recursive --remote
+
+#change git file at the end of the line - branch = main
