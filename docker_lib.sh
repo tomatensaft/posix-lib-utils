@@ -121,3 +121,26 @@ docker_delete_data() {
     docker images
 
 }
+
+# delete local data
+# $1 path for docker volume
+docker_delete_local_data() {
+
+    log -info "delete prductive data/volume"
+
+    # check volume parameter
+    if [ ! -z $1 ]; then
+        log -info "volume parameter $1 not found"
+        exit 1
+    else
+        log -info "volume parameter found $1"
+    fi
+
+    # remove volume data
+    if [ -d $1 ] && \
+        [ ! $1 = "/" ] && \
+        [ ! -z $1 ]; then
+            log -info "delete filed in $1"
+            rm -r $1
+    fi
+}

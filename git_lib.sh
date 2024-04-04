@@ -20,18 +20,26 @@ else
     exit 1
 fi
 
-#first way
-git submodule update --init
-git fetch
-git merge origin/master
+# submodule init with the merge way
+git_submodule_init_merge() 
+{
+    log -info "submodule update/update"
+    git submodule update --init
 
+    log -info "submodule update/fetch"
+    git fetch
 
-#second way
-#goto submodule folder
-git fetch
-git merge origin/main
+    log -info "submodule update/merge"
+    git merge origin/master
+}
 
-#fetch with git upte
-git submodule update --recursive --remote
+# submodule init with update
+git_submodule_update() 
+{
+
+    log -info "submodule update remote"
+    git submodule update --recursive --remote
+
+}
 
 #change git file at the end of the line - branch = main

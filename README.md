@@ -2,11 +2,12 @@
 posix lib for tcbsd and linux
 
 ## contents
-* [installation](#installation)
-* [usage](#usage)
-* [libraries](#libraries)
-* [tests](#tests)
-* [version](#version)
+- [posix-lib-utils :books:](#posix-lib-utils-books)
+  - [contents](#contents)
+  - [installation](#installation)
+  - [usage](#usage)
+  - [libraries](#libraries)
+  - [tests](#tests)
 
 ## installation
 * add as `git add submodule https://github.com/tomatensaft/posix-lib-uitls` in the git project
@@ -34,7 +35,6 @@ fi
 * not testet completly
   
 ---
-## version
 *[v0.1.0]*
 
 
