@@ -3,13 +3,22 @@
 
 # set -x
 
+# load config file for default parameters
+if [ -f  ${SCRIPT_ROOT_PATH}/standard_lib.conf ]; then
+    printf "$0: include default standard parameters from ${SCRIPT_ROOT_PATH}\n"
+    . ${SCRIPT_ROOT_PATH}/standard_lib.conf
+else
+    printf "$0: standardlib default standard parameters not found - exit\n"
+    exit 1
+fi
+
 # header functions
 # $1 header
 print_header()
 {
 
 	printf "\n################################################\n"
-	printf "$1"
+	printf "$LIB_HEADER -- $1"
 	printf "\n################################################\n\n"
 }
 

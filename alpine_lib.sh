@@ -3,12 +3,12 @@
 
 # set -x
 
-# load config file for default debian parameters
-if [ -f  ${SCRIPT_ROOT_PATH}/debian_lib.conf ]; then
-    printf "$0: include default debian parameters from ${SCRIPT_ROOT_PATH}\n"
-    . ${SCRIPT_ROOT_PATH}/debian_lib.conf
+# load config file for default alpine parameters
+if [ -f  ${SCRIPT_ROOT_PATH}/alpine_lib.conf ]; then
+    printf "$0: include default alpine parameters from ${SCRIPT_ROOT_PATH}\n"
+    . ${SCRIPT_ROOT_PATH}/alpine_lib.conf
 else
-    printf "$0: debian lib default parameters not found - exit\n"
+    printf "$0: alpine lib default parameters not found - exit\n"
     exit 1
 fi
 
