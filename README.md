@@ -2,6 +2,7 @@
 posix lib for tcbsd and linux
 
 ## contents
+- [posix-lib-utils :books:](#posix-lib-utils-books)
   - [contents](#contents)
   - [installation](#installation)
   - [usage](#usage)
@@ -35,7 +36,6 @@ fi
 ```
 
 ## libraries
-<<<<<<< HEAD
 * linux(debian) [lib](debian_lib.sh)
 * freebsd (tcbsd) [lib](tcbsd_lib.sh)
 * docker [lib](docker_lib.sh)
@@ -49,7 +49,6 @@ fi
 * git [git_lib](git_lib.sh)
 * standard function [standard](standard_lib.sh)
 * tls library [tls_lib](tls_lib.sh)
->>>>>>> cd7e716 (extend)
 
 ## tests
 * not testet completly
