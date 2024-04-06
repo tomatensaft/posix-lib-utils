@@ -41,7 +41,6 @@ fi
 * docker [lib](docker_lib.sh)
 * git [lib](git_lib.sh)
 * standard functions [lib](standard_lib.sh)
-=======
 * linux(debian) [debian_lib](debian_lib.sh)
 * linux(alpine) [alpine_lib](alpine_lib.sh)
 * twincat-bsd (tcbsd) [bsd_lib](tcbsd_lib.sh)
