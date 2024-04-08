@@ -4,9 +4,9 @@
 # set -x
 
 # load config file for default tls parameters
-if [ -f  ${SCRIPT_ROOT_PATH}/tls_lib.conf ]; then
+if [ -f  ${SCRIPT_ROOT_PATH}/conf/tls_lib.conf ]; then
    printf "$0: include default tls parameters from ${SCRIPT_ROOT_PATH}\n"
-   . ${SCRIPT_ROOT_PATH}/tls_lib.conf
+   . ${SCRIPT_ROOT_PATH}/conf/tls_lib.conf
 else
    printf "$0: tls lib default parameters not found - exit\n"
    exit 1
@@ -16,7 +16,7 @@ fi
 if [ ! -z ${SCRIPT_ROOT_PATH} ]; then
 	printf "$0: script root path set - use ${SCRIPT_ROOT_PATH} for include\n"
 else
-	printf "$0: script rootpath ${SCRIPT_ROOT_PATH} not found - use local\n"
+	printf "$0: script rootpath ${SCRIPT_ROOT_PATH} not found\n"
 	exit 1
 fi
 
@@ -75,7 +75,7 @@ openssl_x509_ecdsa() {
    openssl req -new -x509 -key ${SERVER_CERT_NAME}.key -subj ${SERVER_CERT_ATTRIBUTES} -out ${SERVER_CERT_NAME}.pem -days ${CERT_DURATION}
 
    # convert pem to pfx
-   log -info "export cert to pfxt"
+   log -info "export cert to pfx"
    openssl pkcs12 -export -inkey ${SERVER_CERT_NAME}.key -in ${SERVER_CERT_NAME}.pem -out ${SERVER_CERT_NAME}.pfx
 
    # finished
@@ -118,6 +118,11 @@ openssl_x509_rsa() {
    # sign client certificate
    log -info "sign client private certificate"
    openssl x509 -req -in ${CLIENT_CERT_NAME}.csr -CA ${ROOTCA_NAME}.pem -CAkey ${ROOTCA_NAME}.key -CAcreateserial -out ${CLIENT_CERT_NAME}.crt -days ${CERT_DURATION} -sha256
+
+   # convert certificates to pfx - with no password use -keypbe NONE -certpbe NONE
+   # private and public pfx with password
+   openssl pkcs12 -export -inkey ${SERVER_CERT_NAME}.key -in ${SERVER_CERT_NAME}.crt -out ${SERVER_CERT_NAME}.pfx
+   openssl pkcs12 -export -inkey ${CLIENT_CERT_NAME}.key -in ${CLIENT_CERT_NAME}.crt -out ${CLIENT_CERT_NAME}.pfx
 
    # finished
    log -info "cert generate finished"

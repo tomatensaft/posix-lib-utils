@@ -4,9 +4,9 @@
 # set -x
 
 # load config file for default alpine parameters
-if [ -f  ${SCRIPT_ROOT_PATH}/alpine_lib.conf ]; then
+if [ -f  ${SCRIPT_ROOT_PATH}/conf/alpine_lib.conf ]; then
     printf "$0: include default alpine parameters from ${SCRIPT_ROOT_PATH}\n"
-    . ${SCRIPT_ROOT_PATH}/alpine_lib.conf
+    . ${SCRIPT_ROOT_PATH}/conf/alpine_lib.conf
 else
     printf "$0: alpine lib default parameters not found - exit\n"
     exit 1
@@ -16,7 +16,7 @@ fi
 if [ ! -z ${SCRIPT_ROOT_PATH} ]; then
 	printf "$0: script root path set - use ${SCRIPT_ROOT_PATH} for include\n"
 else
-	printf "$0: script rootpath ${SCRIPT_ROOT_PATH} not found - use local\n"
+	printf "$0: script rootpath ${SCRIPT_ROOT_PATH} not found\n"
 	exit 1
 fi
 
