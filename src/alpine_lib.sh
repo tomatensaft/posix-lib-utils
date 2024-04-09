@@ -28,3 +28,23 @@ else
     printf "$0: standardlib not found - exit\n"
     exit 1
 fi
+
+# install .net framework
+setup_dotnet_installscript() {
+
+    log -info "get dotnet installation script"
+    wget https://dot.net/v1/dotnet-install.sh -O dotnet-install.sh
+
+    log -info "dotnet install"
+    chmod +x ./dotnet-install.sh
+
+    # install latetest sdk
+    ./dotnet-install.sh --version latest
+
+    # runtime with aspnetcore
+    #./dotnet-install.sh --version latest --runtime aspnetcore
+
+    # install defined branch e.g. net 8
+    #./dotnet-install.sh --channel 8.0
+
+}

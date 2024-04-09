@@ -30,7 +30,7 @@ else
 fi
 
 # install .net framework
-setup_dotnet_framework() {
+dotnet_setup_installscript() {
 
     log -info "get dotnet installation script"
     wget https://dot.net/v1/dotnet-install.sh -O dotnet-install.sh
@@ -38,7 +38,43 @@ setup_dotnet_framework() {
     log -info "dotnet install"
     chmod +x ./dotnet-install.sh
 
+    # install latetest sdk
+    ./dotnet-install.sh --version latest
+
+    # runtime with aspnetcore
     #./dotnet-install.sh --version latest --runtime aspnetcore
+
+    # install defined branch e.g. net 8
     #./dotnet-install.sh --channel 8.0
+
+}
+
+
+# setup qemu packages without graphical interface
+qemu_setup() {
+
+    # check cpuinfo - if
+    grep -Ec '(vmx|svm)' /proc/cpuinfo 
+
+    # install packages
+    apt install --no-install-recommends qemu-system libvirt-clients libvirt-daemon-system qemu-utils dnsmasq-base
+
+    # install guest agents
+    apt install qemu-guest-agent
+
+    #validate installatio - yes/no
+    virt-host-validate
+
+    # add actual user to virtualization group
+    usermod -a -G libvirt $USER
+    usermod -a -G kvm $USER
+
+    # output status of service
+    systemctl status libvirtd
+
+    # check if not running
+    # sudo systemctl start libvirtd
+    # sudo systemctl enable libvirtd
+
 
 }
